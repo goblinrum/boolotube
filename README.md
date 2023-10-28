@@ -36,11 +36,13 @@ timestamp_map: {
 ### Endpoints
 `POST /project`
 - Creates a new project. Requires the 2 videos to be present
+
 `GET /project/:id`
 - Gets the project given the ID
 - Serves as the "permalink" to the project
 - Returns both links, generates embeds for both
 - Gets the list of matching timestamps
+
 `POST /timestamp`
 - Body:
 - ```
@@ -52,9 +54,11 @@ timestamp_map: {
   ```
 - Creates a new timestamp attached to the corresponding object
 - Does a few quick validations to check that the timestamps are logically correct
+
 `GET /timestamp/:id`
 - Optionally can be just a foreign key to project and the query returns all the nested data
 - Gets relevant info about the timestamps
+
 `DELETE /timestamp/:id`
 - Deletes the timestamp object that holds the corresponding mapping
 
