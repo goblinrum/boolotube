@@ -3,7 +3,6 @@ import reflex as rx
 from BooloTube.templates import template
 from BooloTube.state import State
 from fastapi import Request
-import requests
 
 @template(route="/viewer/{project_id}", title="Viewer")
 def viewer() -> rx.Component:

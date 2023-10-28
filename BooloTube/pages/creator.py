@@ -1,7 +1,6 @@
 import reflex as rx
 from BooloTube.templates import template
 from BooloTube.state import State
-import requests
 import json
 from typing import Optional, Dict, Any
 import httpx
