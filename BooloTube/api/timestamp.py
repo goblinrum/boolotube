@@ -1,15 +1,11 @@
+from rxconfig import config
 from fastapi import APIRouter, HTTPException, Request
-import sqlite3
 import uuid
 import json
 import psycopg
 
-DB_URL = "postgresql://rainbwshep:0UQ7NEw-2djpNiRL2frQFw@boolo1-3695.g95.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full"
-
 def connect_db():
-    return psycopg.connect(DB_URL)
-
-    # return sqlite3.connect("boolotube.db")
+    return psycopg.connect(config.db_url)
 
 async def create_timestamp(req: Request):
     data=json.loads(await req.body())
