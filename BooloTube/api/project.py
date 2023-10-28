@@ -10,12 +10,21 @@ def connect_db():
 async def create_project(req: Request):
     data=json.loads(await req.body())
     my_reaction_url=data['my_reaction_url']
-    original_video_url=data['original_video_url']
+    original_video_url=data['original_video_url'] 
     if not all([my_reaction_url, original_video_url]):
         raise HTTPException(status_code=400, detail="Both reaction and original video URLs are required.")
-
+    if my_reaction_url==original_video_url:
+        raise HTTPException(status_code=400, detail="Reaction and original video URLs can't be the same.")
     conn = connect_db()
     cursor = conn.cursor()
+    cursor.execute("SELECT uuid, my_reaction_url, original_video_url, createdAt FROM projects WHERE my_reaction_url=%s AND original_video_url=%s", (my_reaction_url, original_video_url,))
+    project = cursor.fetchone()
+    if project:
+        raise HTTPException(status_code=400, detail="Project with my_reaction_url and original_video_url already exists.")
+    cursor.execute("SELECT uuid, my_reaction_url, original_video_url, createdAt FROM projects WHERE my_reaction_url=%s AND original_video_url=%s", (original_video_url, my_reaction_url,))
+    project = cursor.fetchone()
+    if project:
+        raise HTTPException(status_code=400, detail="Project with my_reaction_url and original_video_url already exists.")
     project_id = str(uuid.uuid4())
     cursor.execute("INSERT INTO projects (uuid, my_reaction_url, original_video_url) VALUES (%s, %s, %s)", (project_id, my_reaction_url, original_video_url))
     conn.commit()
