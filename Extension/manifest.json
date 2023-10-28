@@ -1,0 +1,18 @@
+{
+    "manifest_version": 3,
+    "name": "Boolo",
+    "version": "1.0",
+    "description": "Reaction video sync",
+    "action": {
+      "default_popup": "project.html"
+    },
+    "permissions": [
+      "activeTab",
+      "scripting",
+      "storage"
+    ],
+    "background": {
+      "service_worker": "background.js"
+    }
+  }
+  

@@ -5,6 +5,7 @@ from BooloTube.state import State
 import json
 from typing import Optional, Dict, Any
 import httpx
+from fastapi import Request
 
 class ViewerState(State):
 
