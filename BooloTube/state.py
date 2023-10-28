@@ -15,6 +15,9 @@ class State(rx.State):
         # Our chatbot is not very smart right now...
         answer = "I don't know!"
         self.chat_history.append((self.question, answer))
+    # @rx.var
+    # def project_id(self) -> str:
+    #     return self.get_query_params().get('project_id', 'no pid')
 
 async def answer(self):
     # Our chatbot is not very smart right now...
