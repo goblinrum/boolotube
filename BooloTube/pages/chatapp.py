@@ -2,14 +2,17 @@ import reflex as rx
 
 from BooloTube.templates import template
 from BooloTube.state import State
+from BooloTube import style
 
 def qa(question: str, answer: str) -> rx.Component:
     return rx.box(
         rx.box(
             rx.text(question, text_align="right"),
+            style=style.question_style,
         ),
         rx.box(
             rx.text(answer, text_align="left"),
+            style=style.answer_style,
         ),
         margin_y="1em",
     )
@@ -30,10 +33,12 @@ def action_bar() -> rx.Component:
             value=State.question,
             placeholder="Ask a question",
             on_change=State.set_question,
+            style=style.input_style,
         ),
         rx.button(
             "Ask",
             on_click=State.answer,
+            style=style.button_style,
         ),
     )
 

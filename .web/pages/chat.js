@@ -131,24 +131,24 @@ export default function Component() {
   <Box sx={{"width": "100%", "alignItems": "flex-start", "boxShadow": "0px 0px 0px 1px rgba(84, 82, 95, 0.14)", "borderRadius": "0.375rem", "padding": "1em", "marginBottom": "2em"}}>
   <Container>
   <Box>
-  {state.chat_history.map((puvijasg, i) => (
+  {state.chat_history.map((qqrivcgu, i) => (
   <Box key={i} sx={{"marginY": "1em"}}>
-  <Box>
+  <Box sx={{"padding": "1em", "borderRadius": "5px", "marginY": "0.5em", "boxShadow": "rgba(0, 0, 0, 0.15) 0px 2px 8px", "maxWidth": "30em", "display": "inline-block", "bg": "#F5EFFE", "marginLeft": "20%"}}>
   <Text sx={{"textAlign": "right"}}>
-  {puvijasg.at(0)}
+  {qqrivcgu.at(0)}
 </Text>
 </Box>
-  <Box>
+  <Box sx={{"padding": "1em", "borderRadius": "5px", "marginY": "0.5em", "boxShadow": "rgba(0, 0, 0, 0.15) 0px 2px 8px", "maxWidth": "30em", "display": "inline-block", "bg": "#DEEAFD", "marginRight": "20%"}}>
   <Text sx={{"textAlign": "left"}}>
-  {puvijasg.at(1)}
+  {qqrivcgu.at(1)}
 </Text>
 </Box>
 </Box>
 ))}
 </Box>
   <HStack>
-  <DebounceInput debounceTimeout={50} element={Input} onChange={(_e0) => addEvents([Event("state.set_question", {value:_e0.target.value})], (_e0))} placeholder={`Ask a question`} type={`text`} value={state.question}/>
-  <Button onClick={(_e) => addEvents([Event("state.answer", {})], (_e))}>
+  <DebounceInput debounceTimeout={50} element={Input} onChange={(_e0) => addEvents([Event("state.set_question", {value:_e0.target.value})], (_e0))} placeholder={`Ask a question`} sx={{"borderWidth": "1px", "padding": "1em", "boxShadow": "rgba(0, 0, 0, 0.15) 0px 2px 8px"}} type={`text`} value={state.question}/>
+  <Button onClick={(_e) => addEvents([Event("state.answer", {})], (_e))} sx={{"bg": "#CEFFEE", "boxShadow": "rgba(0, 0, 0, 0.15) 0px 2px 8px"}}>
   {`Ask`}
 </Button>
 </HStack>
