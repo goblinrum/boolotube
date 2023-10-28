@@ -1,11 +1,12 @@
 import { Fragment, useContext, useEffect, useRef, useState } from "react"
 import { useRouter } from "next/router"
-import { Event, getAllLocalStorageItems, getRefValue, getRefValues, isTrue, preventDefault, refs, spreadArraysOrObjects, uploadFiles, useEventLoop } from "/utils/state"
+import { Event, getAllLocalStorageItems, getRefValue, getRefValues, isTrue, preventDefault, refs, set_val, spreadArraysOrObjects, uploadFiles, useEventLoop } from "/utils/state"
 import { ColorModeContext, EventLoopContext, initialEvents, StateContext } from "/utils/context.js"
 import "focus-visible/dist/focus-visible"
-import { Box, Center, Code, Heading, HStack, Image, Link, Menu, MenuButton, MenuDivider, MenuItem, MenuList, Modal, ModalBody, ModalContent, ModalHeader, ModalOverlay, Spacer, Text, VStack } from "@chakra-ui/react"
+import { Box, Button, Center, Container, HStack, Image, Input, Link, Menu, MenuButton, MenuDivider, MenuItem, MenuList, Modal, ModalBody, ModalContent, ModalHeader, ModalOverlay, Spacer, Text, VStack } from "@chakra-ui/react"
 import { getEventURL } from "/utils/state.js"
 import NextLink from "next/link"
+import { DebounceInput } from "react-debounce-input"
 import { HamburgerIcon } from "@chakra-ui/icons"
 import NextHead from "next/head"
 
@@ -128,20 +129,30 @@ export default function Component() {
 </Box>
   <Box sx={{"paddingTop": "5em", "paddingX": ["auto", "2em"]}}>
   <Box sx={{"width": "100%", "alignItems": "flex-start", "boxShadow": "0px 0px 0px 1px rgba(84, 82, 95, 0.14)", "borderRadius": "0.375rem", "padding": "1em", "marginBottom": "2em"}}>
-  <VStack>
-  <Heading sx={{"fontSize": "3em"}}>
-  {`Settings`}
-</Heading>
-  <Text>
-  {`Welcome to Reflex!`}
+  <Container>
+  <Box>
+  {state.chat_history.map((puvijasg, i) => (
+  <Box key={i} sx={{"marginY": "1em"}}>
+  <Box>
+  <Text sx={{"textAlign": "right"}}>
+  {puvijasg.at(0)}
 </Text>
-  <Text>
-  {`You can edit this page in `}
-  <Code>
-  {`{your_app}/pages/settings.py`}
-</Code>
+</Box>
+  <Box>
+  <Text sx={{"textAlign": "left"}}>
+  {puvijasg.at(1)}
 </Text>
-</VStack>
+</Box>
+</Box>
+))}
+</Box>
+  <HStack>
+  <DebounceInput debounceTimeout={50} element={Input} onChange={(_e0) => addEvents([Event("state.set_question", {value:_e0.target.value})], (_e0))} placeholder={`Ask a question`} type={`text`} value={state.question}/>
+  <Button onClick={(_e) => addEvents([Event("state.answer", {})], (_e))}>
+  {`Ask`}
+</Button>
+</HStack>
+</Container>
 </Box>
 </Box>
   <Spacer/>
@@ -188,7 +199,7 @@ export default function Component() {
 </HStack>
   <NextHead>
   <title>
-  {`Settings`}
+  {`Chat`}
 </title>
   <meta content={`A Reflex app.`} name={`description`}/>
   <meta content={`favicon.ico`} property={`og:image`}/>

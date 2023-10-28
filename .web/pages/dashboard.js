@@ -85,6 +85,14 @@ export default function Component() {
 </Text>
 </HStack>
 </Link>
+  <Link as={NextLink} href={`/chat`} sx={{"width": "100%"}}>
+  <HStack sx={{"bg": isTrue((state.router.page.path === "/chat") || (((state.router.page.path === "/") && "Chat") === "Home")) ? `#F5EFFE` : `transparent`, "color": isTrue((state.router.page.path === "/chat") || (((state.router.page.path === "/") && "Chat") === "Home")) ? `#1A1060` : `black`, "borderRadius": "0.375rem", "boxShadow": "0px 0px 0px 1px rgba(84, 82, 95, 0.14)", "width": "100%", "paddingX": "1em"}}>
+  <Image src={`/github.svg`} sx={{"height": "2.5em", "padding": "0.5em"}}/>
+  <Text>
+  {`Chat`}
+</Text>
+</HStack>
+</Link>
   <Link as={NextLink} href={`/dashboard`} sx={{"width": "100%"}}>
   <HStack sx={{"bg": isTrue((state.router.page.path === "/dashboard") || (((state.router.page.path === "/") && "Dashboard") === "Home")) ? `#F5EFFE` : `transparent`, "color": isTrue((state.router.page.path === "/dashboard") || (((state.router.page.path === "/") && "Dashboard") === "Home")) ? `#1A1060` : `black`, "borderRadius": "0.375rem", "boxShadow": "0px 0px 0px 1px rgba(84, 82, 95, 0.14)", "width": "100%", "paddingX": "1em"}}>
   <Image src={`/github.svg`} sx={{"height": "2.5em", "padding": "0.5em"}}/>
@@ -146,6 +154,11 @@ export default function Component() {
   <MenuItem sx={{"_hover": {"bg": "#F5EFFE"}}}>
   <Link as={NextLink} href={`/`} sx={{"width": "100%"}}>
   {`Home`}
+</Link>
+</MenuItem>
+  <MenuItem sx={{"_hover": {"bg": "#F5EFFE"}}}>
+  <Link as={NextLink} href={`/chat`} sx={{"width": "100%"}}>
+  {`Chat`}
 </Link>
 </MenuItem>
   <MenuItem sx={{"_hover": {"bg": "#F5EFFE"}}}>
