@@ -1,10 +1,11 @@
+from rxconfig import config
 from fastapi import APIRouter, HTTPException, Request
-import sqlite3
 import uuid
 import json
+import psycopg
 
 def connect_db():
-    return sqlite3.connect("boolotube.db")
+    return psycopg.connect(config.db_url)
 
 async def create_project(req: Request):
     data=json.loads(await req.body())
@@ -16,7 +17,7 @@ async def create_project(req: Request):
     conn = connect_db()
     cursor = conn.cursor()
     project_id = str(uuid.uuid4())
-    cursor.execute("INSERT INTO projects (uuid, my_reaction_url, original_video_url) VALUES (?, ?, ?)", (project_id, my_reaction_url, original_video_url))
+    cursor.execute("INSERT INTO projects (uuid, my_reaction_url, original_video_url) VALUES (%s, %s, %s)", (project_id, my_reaction_url, original_video_url))
     conn.commit()
     conn.close()
 
@@ -25,7 +26,7 @@ async def create_project(req: Request):
 def get_project(id: str):
     conn = connect_db()
     cursor = conn.cursor()
-    cursor.execute("SELECT uuid, my_reaction_url, original_video_url, createdAt FROM projects WHERE uuid=?", (id,))
+    cursor.execute("SELECT uuid, my_reaction_url, original_video_url, createdAt FROM projects WHERE uuid=%s", (id,))
     project = cursor.fetchone()
 
     if project:

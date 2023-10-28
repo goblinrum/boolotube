@@ -14,6 +14,8 @@ the way it works is:
 3. I upload the reaction video to youtube (or any other side with video embeds) and link the corresponding project created from this app
 4. when watching the video, the OG content should pop up alongside my reaction at 1:21
 
+Figma is [here](https://www.figma.com/file/EIl7wSWOZWOlxMg7MSMENj/BooloTube?type=design&node-id=0%3A1&mode=design&t=iAyaf7vB5pvYUqRO-1)
+
 ## API Functionality
 ### Models
 ```
