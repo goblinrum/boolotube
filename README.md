@@ -36,6 +36,11 @@ timestamp_map: {
 ### Endpoints
 `POST /project`
 - Creates a new project. Requires the 2 videos to be present
+- Body:
+- ```
+    my_reaction_url: String,
+    original_video_url: String,
+  ```
 
 `GET /project/:id`
 - Gets the project given the ID
