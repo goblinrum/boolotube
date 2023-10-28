@@ -11,7 +11,9 @@ def creator() -> rx.Component:
     return rx.vstack(
         project_form(),
         rx.cond(FormState.response_p,
-               timestamp_form())
+               timestamp_form()),
+        rx.cond(FormState.err,
+                rx.text(FormState.err))
     )
 
 
@@ -21,19 +23,28 @@ class FormState(State):
     response_p: Optional[str] = None
     form_data_t: Dict[str, Any] = {}
     response_t: Optional[str] = None
+    err: Optional[str] = None
 
     async def handle_submit_p(self, form_data: dict):
         self.form_data_p = form_data
         async with httpx.AsyncClient() as client:
             response = await client.post("http://localhost:8000/project", data=json.dumps(form_data))
-        self.response_p = response.json()['project_id']
+        if response.status_code==400:
+            self.err = response.json()['detail']
+        else:
+            self.response_p = response.json()['project_id']
+            self.err = None
 
     async def handle_submit_t(self, form_data: dict):
         form_data['project_id'] = self.response_p
         self.form_data_t = form_data
         async with httpx.AsyncClient() as client:
             response = await client.post("http://localhost:8000/timestamp", data=json.dumps(form_data))
-        self.response_t = response.json()['timestamp_id']
+        if response.status_code==400:
+            self.err = response.json()['detail']
+        else:
+            self.response_t = response.json()['timestamp_id']
+            self.err = None
 
 def project_form() -> rx.Component:
     return rx.vstack(

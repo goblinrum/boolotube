@@ -10,15 +10,39 @@ def connect_db():
 async def create_timestamp(req: Request):
     data=json.loads(await req.body())
     project_id=data['project_id']
-    start_time_my_reaction=data['start_time_my_reaction']
-    end_time_my_reaction=data['end_time_my_reaction']
-    start_time_original=data['start_time_original']
-    end_time_original=data['end_time_original']
+    start_time_my_reaction=int(data['start_time_my_reaction'])
+    end_time_my_reaction=int(data['end_time_my_reaction'])
+    start_time_original=int(data['start_time_original'])
+    end_time_original=int(data['end_time_original'])
     if start_time_my_reaction > end_time_my_reaction or start_time_original > end_time_original:
         raise HTTPException(status_code=400, detail="Start time cannot be after end time.")
-
+    if (end_time_my_reaction - start_time_my_reaction) != (end_time_original - start_time_original):
+        raise HTTPException(status_code=400, detail="Time difference between start and end should be the same for both reaction and original.")
     conn = connect_db()
     cursor = conn.cursor()
+    cursor.execute(
+        """SELECT uuid 
+        FROM timestamp_map 
+        WHERE project_id = %s AND 
+        start_time_my_reaction = %s AND 
+        end_time_my_reaction = %s AND 
+        start_time_original = %s AND 
+        end_time_original = %s""",
+        (project_id, start_time_my_reaction, end_time_my_reaction, start_time_original, end_time_original)
+    )
+    if cursor.fetchone():
+        raise HTTPException(status_code=400, detail="This timestamp mapping already exists for the project.")
+
+    cursor.execute(
+        """SELECT start_time_my_reaction, end_time_my_reaction, start_time_original, end_time_original 
+        FROM timestamp_map 
+        WHERE project_id = %s""",
+        (project_id,)
+    )
+    existing_timestamps = cursor.fetchall()
+    for existing in existing_timestamps:
+        if not (end_time_my_reaction <= existing[0] or start_time_my_reaction >= existing[1] or end_time_original <= existing[2] or start_time_original >= existing[3]):
+            raise HTTPException(status_code=400, detail="Overlapping timestamps detected.")
     timestamp_id = str(uuid.uuid4())
     cursor.execute(
         """INSERT INTO timestamp_map 
