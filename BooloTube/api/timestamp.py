@@ -10,6 +10,8 @@ def connect_db():
 async def create_timestamp(req: Request):
     data=json.loads(await req.body())
     project_id=data['project_id']
+    if not all([data['start_time_my_reaction'], data['end_time_my_reaction'], data['start_time_original'], data['end_time_original']]):
+        raise HTTPException(status_code=400, detail="Please fill out all fields.")
     start_time_my_reaction=int(data['start_time_my_reaction'])
     end_time_my_reaction=int(data['end_time_my_reaction'])
     start_time_original=int(data['start_time_original'])
