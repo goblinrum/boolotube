@@ -30,7 +30,7 @@ timestamp_map: {
   start_time_my_reaction: Integer (seconds from start)
   end_time_my_reaction: Integer,
   start_time_original: Integer,
-  end_time_originak: Integer,
+  end_time_original: Integer,
 }
 ```
 ### Endpoints
