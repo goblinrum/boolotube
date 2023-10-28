@@ -131,16 +131,16 @@ export default function Component() {
   <Box sx={{"width": "100%", "alignItems": "flex-start", "boxShadow": "0px 0px 0px 1px rgba(84, 82, 95, 0.14)", "borderRadius": "0.375rem", "padding": "1em", "marginBottom": "2em"}}>
   <Container>
   <Box>
-  {state.chat_history.map((qqrivcgu, i) => (
+  {state.chat_history.map((fagsabld, i) => (
   <Box key={i} sx={{"marginY": "1em"}}>
   <Box sx={{"padding": "1em", "borderRadius": "5px", "marginY": "0.5em", "boxShadow": "rgba(0, 0, 0, 0.15) 0px 2px 8px", "maxWidth": "30em", "display": "inline-block", "bg": "#F5EFFE", "marginLeft": "20%"}}>
   <Text sx={{"textAlign": "right"}}>
-  {qqrivcgu.at(0)}
+  {fagsabld.at(0)}
 </Text>
 </Box>
   <Box sx={{"padding": "1em", "borderRadius": "5px", "marginY": "0.5em", "boxShadow": "rgba(0, 0, 0, 0.15) 0px 2px 8px", "maxWidth": "30em", "display": "inline-block", "bg": "#DEEAFD", "marginRight": "20%"}}>
   <Text sx={{"textAlign": "left"}}>
-  {qqrivcgu.at(1)}
+  {fagsabld.at(1)}
 </Text>
 </Box>
 </Box>
