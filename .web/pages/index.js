@@ -101,6 +101,14 @@ export default function Component() {
 </Text>
 </HStack>
 </Link>
+  <Link as={NextLink} href={`/creator`} sx={{"width": "100%"}}>
+  <HStack sx={{"bg": isTrue((state.router.page.path === "/creator") || (((state.router.page.path === "/") && "Creator") === "Home")) ? `#F5EFFE` : `transparent`, "color": isTrue((state.router.page.path === "/creator") || (((state.router.page.path === "/") && "Creator") === "Home")) ? `#1A1060` : `black`, "borderRadius": "0.375rem", "boxShadow": "0px 0px 0px 1px rgba(84, 82, 95, 0.14)", "width": "100%", "paddingX": "1em"}}>
+  <Image src={`/github.svg`} sx={{"height": "2.5em", "padding": "0.5em"}}/>
+  <Text>
+  {`Creator`}
+</Text>
+</HStack>
+</Link>
   <Link as={NextLink} href={`/dashboard`} sx={{"width": "100%"}}>
   <HStack sx={{"bg": isTrue((state.router.page.path === "/dashboard") || (((state.router.page.path === "/") && "Dashboard") === "Home")) ? `#F5EFFE` : `transparent`, "color": isTrue((state.router.page.path === "/dashboard") || (((state.router.page.path === "/") && "Dashboard") === "Home")) ? `#1A1060` : `black`, "borderRadius": "0.375rem", "boxShadow": "0px 0px 0px 1px rgba(84, 82, 95, 0.14)", "width": "100%", "paddingX": "1em"}}>
   <Image src={`/github.svg`} sx={{"height": "2.5em", "padding": "0.5em"}}/>
@@ -175,6 +183,11 @@ timestamp_map: {
 ### Endpoints
 \`POST /project\`
 - Creates a new project. Requires the 2 videos to be present
+- Body:
+- \`\`\`
+    my_reaction_url: String,
+    original_video_url: String,
+  \`\`\`
 
 \`GET /project/:id\`
 - Gets the project given the ID
@@ -300,6 +313,11 @@ specific to a page, you can define it in the page file itself.
   <MenuItem sx={{"_hover": {"bg": "#F5EFFE"}}}>
   <Link as={NextLink} href={`/chat`} sx={{"width": "100%"}}>
   {`Chat`}
+</Link>
+</MenuItem>
+  <MenuItem sx={{"_hover": {"bg": "#F5EFFE"}}}>
+  <Link as={NextLink} href={`/creator`} sx={{"width": "100%"}}>
+  {`Creator`}
 </Link>
 </MenuItem>
   <MenuItem sx={{"_hover": {"bg": "#F5EFFE"}}}>

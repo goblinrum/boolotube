@@ -52,7 +52,7 @@ def get_timestamp(id: str):
 def delete_timestamp(id: str):
     conn = connect_db()
     cursor = conn.cursor()
-    cursor.execute("DELETE FROM timestamp_map WHERE uuid=?", (id,))
+    cursor.execute("DELETE FROM timestamps WHERE uuid=?", (id,))
     conn.commit()
     deleted_count = cursor.rowcount
     conn.close()

@@ -94,6 +94,14 @@ export default function Component() {
 </Text>
 </HStack>
 </Link>
+  <Link as={NextLink} href={`/creator`} sx={{"width": "100%"}}>
+  <HStack sx={{"bg": isTrue((state.router.page.path === "/creator") || (((state.router.page.path === "/") && "Creator") === "Home")) ? `#F5EFFE` : `transparent`, "color": isTrue((state.router.page.path === "/creator") || (((state.router.page.path === "/") && "Creator") === "Home")) ? `#1A1060` : `black`, "borderRadius": "0.375rem", "boxShadow": "0px 0px 0px 1px rgba(84, 82, 95, 0.14)", "width": "100%", "paddingX": "1em"}}>
+  <Image src={`/github.svg`} sx={{"height": "2.5em", "padding": "0.5em"}}/>
+  <Text>
+  {`Creator`}
+</Text>
+</HStack>
+</Link>
   <Link as={NextLink} href={`/dashboard`} sx={{"width": "100%"}}>
   <HStack sx={{"bg": isTrue((state.router.page.path === "/dashboard") || (((state.router.page.path === "/") && "Dashboard") === "Home")) ? `#F5EFFE` : `transparent`, "color": isTrue((state.router.page.path === "/dashboard") || (((state.router.page.path === "/") && "Dashboard") === "Home")) ? `#1A1060` : `black`, "borderRadius": "0.375rem", "boxShadow": "0px 0px 0px 1px rgba(84, 82, 95, 0.14)", "width": "100%", "paddingX": "1em"}}>
   <Image src={`/github.svg`} sx={{"height": "2.5em", "padding": "0.5em"}}/>
@@ -131,16 +139,16 @@ export default function Component() {
   <Box sx={{"width": "100%", "alignItems": "flex-start", "boxShadow": "0px 0px 0px 1px rgba(84, 82, 95, 0.14)", "borderRadius": "0.375rem", "padding": "1em", "marginBottom": "2em"}}>
   <Container>
   <Box>
-  {state.chat_history.map((fagsabld, i) => (
+  {state.chat_history.map((hnwmdihr, i) => (
   <Box key={i} sx={{"marginY": "1em"}}>
   <Box sx={{"padding": "1em", "borderRadius": "5px", "marginY": "0.5em", "boxShadow": "rgba(0, 0, 0, 0.15) 0px 2px 8px", "maxWidth": "30em", "display": "inline-block", "bg": "#F5EFFE", "marginLeft": "20%"}}>
   <Text sx={{"textAlign": "right"}}>
-  {fagsabld.at(0)}
+  {hnwmdihr.at(0)}
 </Text>
 </Box>
   <Box sx={{"padding": "1em", "borderRadius": "5px", "marginY": "0.5em", "boxShadow": "rgba(0, 0, 0, 0.15) 0px 2px 8px", "maxWidth": "30em", "display": "inline-block", "bg": "#DEEAFD", "marginRight": "20%"}}>
   <Text sx={{"textAlign": "left"}}>
-  {fagsabld.at(1)}
+  {hnwmdihr.at(1)}
 </Text>
 </Box>
 </Box>
@@ -170,6 +178,11 @@ export default function Component() {
   <MenuItem sx={{"_hover": {"bg": "#F5EFFE"}}}>
   <Link as={NextLink} href={`/chat`} sx={{"width": "100%"}}>
   {`Chat`}
+</Link>
+</MenuItem>
+  <MenuItem sx={{"_hover": {"bg": "#F5EFFE"}}}>
+  <Link as={NextLink} href={`/creator`} sx={{"width": "100%"}}>
+  {`Creator`}
 </Link>
 </MenuItem>
   <MenuItem sx={{"_hover": {"bg": "#F5EFFE"}}}>
