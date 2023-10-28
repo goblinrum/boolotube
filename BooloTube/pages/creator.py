@@ -72,10 +72,15 @@ def project_form() -> rx.Component:
     return rx.vstack(
         rx.form(
             rx.vstack(
-                rx.text("My Reaction URL:", rx.input(type="text", id="my_reaction_url", on_change=FormState.set_reaction_url, value=FormState.reaction_url)),
-                rx.text("Original Video URL:", rx.input(type="text", id="original_video_url", on_change=FormState.set_original_url, value=FormState.original_url)),
+                rx.text("My Reaction URL:", rx.cond(~FormState.response_p,
+                    rx.input(type="text", id="my_reaction_url", on_change=FormState.set_reaction_url, value=FormState.reaction_url),
+                    rx.input(type="text", id="my_reaction_url", on_change=FormState.set_reaction_url, value=FormState.reaction_url, is_disabled=True))),
+                rx.text("Original Video URL:", rx.cond(~FormState.response_p,
+                    rx.input(type="text", id="original_video_url", on_change=FormState.set_original_url, value=FormState.original_url),
+                    rx.input(type="text", id="original_video_url", on_change=FormState.set_original_url, value=FormState.original_url, is_disabled=True))),
                 rx.cond(~FormState.response_p,
-                        rx.button("Submit", type_="submit")),
+                    rx.button("Submit", type_="submit"),
+                    rx.button("Submit", type_="submit", is_disabled=True)),
             ),
             on_submit=FormState.handle_submit_p,
         ),
