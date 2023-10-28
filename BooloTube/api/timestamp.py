@@ -2,9 +2,14 @@ from fastapi import APIRouter, HTTPException, Request
 import sqlite3
 import uuid
 import json
+import psycopg
+
+DB_URL = "postgresql://rainbwshep:0UQ7NEw-2djpNiRL2frQFw@boolo1-3695.g95.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full"
 
 def connect_db():
-    return sqlite3.connect("boolotube.db")
+    return psycopg.connect(DB_URL)
+
+    # return sqlite3.connect("boolotube.db")
 
 async def create_timestamp(req: Request):
     data=json.loads(await req.body())
@@ -22,7 +27,7 @@ async def create_timestamp(req: Request):
     cursor.execute(
         """INSERT INTO timestamp_map 
         (uuid, project_id, start_time_my_reaction, end_time_my_reaction, start_time_original, end_time_original) 
-        VALUES (?, ?, ?, ?, ?, ?)""",
+        VALUES (%s, %s, %s, %s, %s, %s)""",
         (timestamp_id, project_id, start_time_my_reaction, end_time_my_reaction, start_time_original, end_time_original)
     )
     conn.commit()
@@ -34,7 +39,7 @@ def get_timestamp(id: str):
     conn = connect_db()
     cursor = conn.cursor()
     cursor.execute("""SELECT uuid, project_id, start_time_my_reaction, end_time_my_reaction, start_time_original, end_time_original 
-                      FROM timestamp_map WHERE uuid=?""", (id,))
+                      FROM timestamp_map WHERE uuid=%s""", (id,))
     timestamp = cursor.fetchone()
 
     if timestamp:
@@ -52,7 +57,7 @@ def get_timestamp(id: str):
 def delete_timestamp(id: str):
     conn = connect_db()
     cursor = conn.cursor()
-    cursor.execute("DELETE FROM timestamp_map WHERE uuid=?", (id,))
+    cursor.execute("DELETE FROM timestamp_map WHERE uuid=%s", (id,))
     conn.commit()
     deleted_count = cursor.rowcount
     conn.close()
