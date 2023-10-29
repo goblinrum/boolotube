@@ -213,7 +213,7 @@ def video_container() -> rx.Component:
 
         </html>
     """
-    return rx.cond((ViewerState.stored_project_id is not None), rx.html(html_content), rx.text("Loading...")) 
+    return rx.cond((ViewerState.stored_project_id is not None and ViewerState.stored_my_reaction_url is not None and ViewerState.stored_original_video_url is not None), rx.html(html_content), rx.text("Loading...")) 
 
 
 def timestamps_list(timestamps: list) -> rx.Component:

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+    <!-- 1. The <iframe> (and video player) will replace this <div> tag. -->
+    <div id="player1"></div>
+    <div id="player2"></div>
+
+    <script>
+        var tag = document.createElement('script');
+
+        tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+        var project_id = "ea63f6e8-2346-4d1c-a06b-5a7bd0222060"; // For demonstration
+        var my_reaction = "bDaQUndFfaE";
+        var original_video = "QjvpjXdgugA";
+        var timestamps = [];
+
+        var player1;
+        var player2;
+
+        function onYouTubeIframeAPIReady() {
+            player1 = new YT.Player('player1', {
+                height: '390',
+                width: '640',
+                videoId: my_reaction,
+                playerVars: {
+                    'playsinline': 1
+                },
+                events: {
+                    'onReady': onPlayerReady,
+                    'onStateChange': onPlayerStateChange
+                }
+            });
+            player2 = new YT.Player('player2', {
+                height: '390',
+                width: '640',
+                videoId: original_video,
+                playerVars: {
+                    'playsinline': 1
+                },
+            });
+        }
+
+        function onPlayerReady(event) {
+            fetchTimestamps();
+            event.target.playVideo();
+        }
+
+        function fetchTimestamps() {
+            fetch(`http://localhost:8000/timestamps/${project_id}`)
+                .then(response => response.json())
+                .then(data => {
+                    timestamps = data.result;
+                })
+                .catch(error => {
+                    console.error('Error fetching timestamps:', error);
+                });
+        }
+
+        function onPlayerStateChange(event) {
+            let activeTimestamp = null;
+            let seen = false;
+            const buffer = 1;
+            const seekBuffer = 1;
+            let lastSeekTime = 0;
+
+            setInterval(function () {
+                let currentTime = player1.getCurrentTime();
+
+                if (player1.getPlayerState() === 2) {
+                    player2.pauseVideo();
+                    return;
+                }
+
+                let currentTimestamp = timestamps.find(ts => currentTime > ts.start_time_my_reaction - buffer && currentTime < ts.end_time_my_reaction + buffer);
+
+                if (currentTimestamp) {
+                    if (activeTimestamp !== currentTimestamp) {
+                        seen = false;
+                        activeTimestamp = currentTimestamp;
+                    }
+
+                    let start2 = activeTimestamp.start_time_original;
+                    let end2 = activeTimestamp.end_time_original;
+
+                    if (!seen) {
+                        player2.seekTo(start2);
+                        player2.playVideo();
+                        seen = true;
+                        lastSeekTime = Date.now();
+                    } else {
+                        let expectedTime = start2 + (currentTime - activeTimestamp.start_time_my_reaction);
+                        let drift = Math.abs(player2.getCurrentTime() - expectedTime);
+
+                        if (drift > seekBuffer && Date.now() - lastSeekTime > 5000) {
+                            player2.seekTo(expectedTime);
+                            lastSeekTime = Date.now();
+                        }
+                    }
+
+                    if (currentTime > activeTimestamp.end_time_my_reaction + buffer || player2.getCurrentTime() > end2 + buffer) {
+                        player2.pauseVideo();
+                        seen = false;
+                    }
+                } else if (activeTimestamp) {
+                    player2.pauseVideo();
+                    seen = false;
+                    activeTimestamp = null;
+                }
+            }, 1000);
+        }
+    </script>
+</body>
+
+</html>
