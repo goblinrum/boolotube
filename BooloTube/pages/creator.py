@@ -127,7 +127,7 @@ def creator() -> rx.Component:
         rx.cond(FormState.response_p,
                 rx.text("Your secret_id is: ", FormState.secret, ". Write this down.")),
         rx.cond(FormState.response_p,
-                rx.text("Your product_id is: ", FormState.response_p, ". Write this down.")),
+                rx.text("Your permanent link is: boolotube.reflex.run/viewer/", FormState.response_p, ".")),
         rx.cond(FormState.response_p,
                timestamp_form()),
         rx.cond(FormState.err,
