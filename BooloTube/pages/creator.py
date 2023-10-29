@@ -5,21 +5,38 @@ import json
 from typing import Optional, Dict, Any
 import httpx
 
-@template(route="/creator", title="Creator")
-def creator() -> rx.Component:
-    return rx.vstack(
-        project_form(),
-        rx.cond(FormState.response_p,
-               timestamp_form()),
-        rx.cond(FormState.err,
-                rx.text(FormState.err)),
-        rx.button(
-            "Make New",
-            on_click=FormState.reset_state())
-    )
-
-
 class FormState(State):
+    project: Dict[str, Any] = {}
+    
+    @rx.background
+    async def fetch_project(self):
+        secret_id = self.secret_id
+        async with httpx.AsyncClient() as client:
+            response = await client.get(f"http://localhost:8000/project_s/{secret_id}")
+            if response.status_code == 200:
+                async with self:
+                    self.project = response.json()
+                    self.response_p = self.project['uuid']
+                    self.reaction_url = self.project['my_reaction_url']
+                    self.original_url = self.project['original_video_url']
+                    self.secret = self.project['secret_id']
+                yield
+            else:
+                async with self:
+                    self.err=response.json()['detail']
+                    self.reaction_url=''
+                    self.original_url=''
+                    self.reaction_url_start=''
+                    self.reaction_url_end=''
+                    self.original_url_start=''
+                    self.original_url_end=''
+                    
+                    self.form_data_p={}
+                    self.response_p=None
+                    self.form_data_t={}
+                    self.reaction_url_end=None
+                    self.secret=None
+
 
     reaction_url: str = ''
     original_url: str = ''
@@ -33,6 +50,7 @@ class FormState(State):
     form_data_t: Dict[str, Any] = {}
     response_t: Optional[str] = None
     err: Optional[str] = None
+    secret: Optional[str] = None
 
     def reset_state(self):
         self.form_data_p={}
@@ -56,6 +74,7 @@ class FormState(State):
         else:
             self.response_p = response.json()['project_id']
             self.err = None
+            self.secret=response.json()['secret_id']
 
     async def handle_submit_t(self, form_data: dict):
         form_data['project_id'] = self.response_p
@@ -67,6 +86,21 @@ class FormState(State):
         else:
             self.response_t = response.json()['timestamp_id']
             self.err = None
+
+@template(route="/creator/[pid]", title="Creator", on_load=FormState.fetch_project)
+def creator() -> rx.Component:
+    return rx.vstack(
+        project_form(),
+        rx.cond(FormState.response_p,
+                rx.text("Your secret_id is: ", FormState.secret, ". Write this down.")),
+        rx.cond(FormState.response_p,
+               timestamp_form()),
+        rx.cond(FormState.err,
+                rx.text(FormState.err)),
+        rx.button(
+            "Make New",
+            on_click=FormState.reset_state())
+    )
 
 def project_form() -> rx.Component:
     return rx.vstack(

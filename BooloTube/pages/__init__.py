@@ -1,4 +1,4 @@
-from .dashboard import dashboard
+from .search import search
 from .index import index
 from .settings import settings
 from .chatapp import chatapp
