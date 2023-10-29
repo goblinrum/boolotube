@@ -75,10 +75,7 @@ class FormState(State):
         async with httpx.AsyncClient() as client:  
             response = await client.delete(f"http://localhost:8000/timestamp/{timestamp_uuid}")
             if response.status_code == 200:
-                async with httpx.AsyncClient() as client:  
-                    responsees = await client.get(f"http://localhost:8000/timestamps/{self.response_p}")
-                    if responsees.status_code == 200:
-                        self.timestamp_items_list = responsees.json()["result"]
+                self.timestamp_items_list = [dict for dict in self.timestamp_items_list if dict["uuid"] != timestamp_uuid]
 
     async def handle_submit_p(self, form_data: dict):
         self.form_data_p = form_data
