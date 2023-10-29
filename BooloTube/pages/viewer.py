@@ -117,7 +117,8 @@ def video_container() -> rx.Component:
                             width: '100%',
                             videoId: original_video,
                             playerVars: {{
-                                'playsinline': 1
+                                'playsinline': 1,
+                                'controls': 0,
                             }},
                         }});
                     }}
