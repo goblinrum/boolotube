@@ -76,6 +76,29 @@ def get_timestamp(id: str):
     else:
         raise HTTPException(status_code=404, detail="Timestamp not found.")
 
+def get_timestamps(id: str):
+    conn = connect_db()
+    cursor = conn.cursor()
+    cursor.execute("""SELECT uuid, project_id, start_time_my_reaction, end_time_my_reaction, start_time_original, end_time_original 
+                      FROM timestamp_map WHERE project_id=%s""", (id,))
+    timestamp = cursor.fetchall()
+
+    if timestamp:
+        timestamp_dict = {"result": []}
+        for time in timestamp:
+            timestamp_dict["result"].append({
+                "uuid": time[0],
+                "project_id": time[1],
+                "start_time_my_reaction": time[2],
+                "end_time_my_reaction": time[3],
+                "start_time_original": time[4],
+                "end_time_original": time[5]
+            })
+
+        return timestamp_dict
+    else:
+        raise HTTPException(status_code=404, detail="Timestamp not found.")
+
 def delete_timestamp(id: str):
     conn = connect_db()
     cursor = conn.cursor()
@@ -93,3 +116,4 @@ timestamp_router = APIRouter()
 timestamp_router.add_api_route("/timestamp", create_timestamp, methods=["POST"])
 timestamp_router.add_api_route("/timestamp/{id}", get_timestamp, methods=["GET"])
 timestamp_router.add_api_route("/timestamp/{id}", delete_timestamp, methods=["DELETE"])
+timestamp_router.add_api_route("/timestamps/{id}", get_timestamps, methods=["GET"])
