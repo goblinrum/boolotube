@@ -7,12 +7,17 @@ import psycopg
 def connect_db():
     return psycopg.connect(config.db_url)
 
+def validate_link(url: str):
+    return "youtube.com/watch?v=" in url and "&list=" not in url
+
 async def create_project(req: Request):
     data=json.loads(await req.body())
     my_reaction_url=data['my_reaction_url']
     original_video_url=data['original_video_url'] 
     if not all([my_reaction_url, original_video_url]):
         raise HTTPException(status_code=400, detail="Both reaction and original video URLs are required.")
+    if not all([validate_link(my_reaction_url), validate_link(original_video_url)]):
+        raise HTTPException(status_code=400, detail="Links are not the correct format.")
     if my_reaction_url==original_video_url:
         raise HTTPException(status_code=400, detail="Reaction and original video URLs can't be the same.")
     conn = connect_db()

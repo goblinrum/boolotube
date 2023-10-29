@@ -148,6 +148,7 @@ def creator() -> rx.Component:
 
 def project_form() -> rx.Component:
     return rx.vstack(
+        rx.text('Please enter links in this format: youtube.com/watch?v=<VIDEO_ID>'),
         rx.form(
             rx.vstack(
                 rx.text("My Reaction URL:", rx.cond(~FormState.response_p,
