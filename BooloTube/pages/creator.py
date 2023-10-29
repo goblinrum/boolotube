@@ -4,6 +4,7 @@ from BooloTube.state import State
 import json
 from typing import Optional, Dict, Any
 import httpx
+from functools import partial
 
 class FormState(State):
     project: Dict[str, Any] = {}
@@ -36,7 +37,7 @@ class FormState(State):
                     self.form_data_t={}
                     self.reaction_url_end=None
                     self.secret=None
-
+                    self.timestamp_list=None
 
     reaction_url: str = ''
     original_url: str = ''
@@ -51,6 +52,7 @@ class FormState(State):
     response_t: Optional[str] = None
     err: Optional[str] = None
     secret: Optional[str] = None
+    timestamp_items_list: list[dict] = []
 
     def reset_state(self):
         self.form_data_p={}
@@ -64,6 +66,15 @@ class FormState(State):
         self.reaction_url_end = ""
         self.original_url_start = ""
         self.original_url_end = ""
+
+    async def delete_timestamp(self, timestamp_uuid):
+        async with httpx.AsyncClient() as client:  
+            response = await client.delete(f"http://localhost:8000/timestamp/{timestamp_uuid}")
+            if response.status_code == 200:
+                async with httpx.AsyncClient() as client:  
+                    responsees = await client.get(f"http://localhost:8000/timestamps/{self.response_p}")
+                    if responsees.status_code == 200:
+                        self.timestamp_items_list = responsees.json()["result"]
 
     async def handle_submit_p(self, form_data: dict):
         self.form_data_p = form_data
@@ -87,6 +98,12 @@ class FormState(State):
             self.response_t = response.json()['timestamp_id']
             self.err = None
 
+        async with httpx.AsyncClient() as client:  
+            response = await client.get(f"http://localhost:8000/timestamps/{self.response_p}")
+            if response.status_code == 200:
+                self.timestamp_items_list = response.json()["result"]
+
+    
 @template(route="/creator/[pid]", title="Creator", on_load=FormState.fetch_project)
 def creator() -> rx.Component:
     return rx.vstack(
@@ -132,4 +149,7 @@ def timestamp_form() -> rx.Component:
             ),
             on_submit=FormState.handle_submit_t,  
         ),
+
+        rx.foreach(FormState.timestamp_items_list, lambda timestamp: rx.vstack(rx.hstack(rx.text(f'Start Time My Reaction: {timestamp["start_time_my_reaction"]}'),rx.text(f'End Time My Reaction: {timestamp["end_time_my_reaction"]}')),rx.hstack(rx.text(f'Start Time Original: {timestamp["start_time_original"]}'),rx.text(f'End Time Original: {timestamp["end_time_original"]}')), rx.button(f"Delete", on_click=partial(FormState.delete_timestamp, timestamp['uuid']))))
+
     )
