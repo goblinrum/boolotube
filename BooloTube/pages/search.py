@@ -11,8 +11,32 @@ def search() -> rx.Component:
     return rx.vstack(
         rx.form(
             rx.vstack(
+                rx.spacer(),
+                rx.spacer(),
+                rx.spacer(),
+                rx.spacer(),
+                rx.spacer(),
+                rx.spacer(),
+                rx.spacer(),
+                rx.spacer(),
+                rx.spacer(),
+                rx.spacer(),
+                rx.spacer(),
+                rx.spacer(),
                 rx.text("Find Existing Secret ID:", rx.input(type="text", id="secret_id2", on_change=SearchState.set_secret_id2, value=SearchState.secret_id2)),
                 rx.button("Submit", type_="submit", on_click=rx.redirect(f"/creator/{SearchState.secret_id2}")),
+                rx.spacer(),
+                rx.spacer(),
+                rx.spacer(),
+                rx.spacer(),
+                rx.spacer(),
+                rx.spacer(),
+                rx.spacer(),
+                rx.spacer(),
+                rx.spacer(),
+                rx.spacer(),
+                rx.spacer(),
+                rx.spacer(),
             )
         ),
     )

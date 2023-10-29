@@ -111,6 +111,18 @@ class FormState(State):
 @template(route="/creator/[pid]", title="Creator", on_load=FormState.fetch_project)
 def creator() -> rx.Component:
     return rx.vstack(
+        rx.spacer(),
+        rx.spacer(),
+        rx.spacer(),
+        rx.spacer(),
+        rx.spacer(),
+        rx.spacer(),
+        rx.spacer(),
+        rx.spacer(),
+        rx.spacer(),
+        rx.spacer(),
+        rx.spacer(),
+        rx.spacer(),
         project_form(),
         rx.cond(FormState.response_p,
                 rx.text("Your secret_id is: ", FormState.secret, ". Write this down.")),
@@ -122,7 +134,19 @@ def creator() -> rx.Component:
                 rx.text(FormState.err)),
         rx.button(
             "Make New",
-            on_click=FormState.reset_state())
+            on_click=FormState.reset_state()),
+         rx.spacer(),
+        rx.spacer(),
+        rx.spacer(),
+        rx.spacer(),
+        rx.spacer(),
+        rx.spacer(),
+        rx.spacer(),
+        rx.spacer(),
+        rx.spacer(),
+        rx.spacer(),
+        rx.spacer(),
+        rx.spacer(),
     )
 
 def project_form() -> rx.Component:
