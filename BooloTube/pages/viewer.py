@@ -91,19 +91,18 @@ def video_container() -> rx.Component:
                         original_video = localStorage.getItem('original_video_url');
 
                         if (project_id && my_reaction && original_video) {{
-                            clearInterval(localStorageCheckInterval); // clear the interval
                             my_reaction = my_reaction.split('v=')[1];
                             original_video = original_video.split('v=')[1];
                             
                             // now that we have the necessary data, proceed with initializing the YouTube player
                             createPlayers();
                         }}
-                    }}, 500);
+                    }}, 1000);
                     function createPlayers() {{
                         clearInterval(localStorageCheckInterval);
                         player1 = new YT.Player('player1', {{
-                            height: '390',
-                            width: '640',
+                            height: '800em',
+                            width: '100%',
                             videoId: my_reaction,
                             playerVars: {{
                                 'playsinline': 1
@@ -114,8 +113,8 @@ def video_container() -> rx.Component:
                             }}
                         }});
                         player2 = new YT.Player('player2', {{
-                            height: '390',
-                            width: '640',
+                            height: '800em',
+                            width: '100%',
                             videoId: original_video,
                             playerVars: {{
                                 'playsinline': 1
