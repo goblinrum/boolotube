@@ -49,21 +49,6 @@ def iframe_component(src: str, width: str = "100%", height: str = "100%") -> rx.
 
 
 def video_container() -> rx.Component:
-    # return rx.hstack(
-    #     rx.box(
-    #         element="iframe",
-    #         # src = ViewerState.my_reaction_url + "?enablejsapi=1&origin=http://localhost:3000", # +  rx.Var.create("window.location.href", _var_is_local=True),
-    #         # width = "420",
-    #         # height = "600",
-    #         id = "my-reaction-video",
-    #     ),
-        # return rx.video(
-        #     # element="iframe",
-        #     url = ViewerState.original_video_url + "?enablejsapi=1&origin=http://localhost:3000", # + rx.Var.create("window.location.href", _var_is_local=True),
-        #     width = "420",
-        #     height = "600",
-        #     id = "original-video",
-        # )
     html_content = f"""
         <!DOCTYPE html>
         <html>
@@ -149,7 +134,9 @@ def video_container() -> rx.Component:
                         .then(response => response.json())
                         .then(data => {{
                             timestamps = data.result;
-                            localStorage.clear();
+                            localStorage.removeItem('project_id');
+                            localStorage.removeItem('my_reaction_url');
+                            localStorage.removeItem('original_video_url');
                         }})
                         .catch(error => {{
                             console.error('Error fetching timestamps:', error);
