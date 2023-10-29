@@ -47,10 +47,7 @@ def menu_button() -> rx.Component:
                 ],
                 rx.menu_divider(),
                 rx.menu_item(
-                    rx.link("About", href="https://github.com/reflex-dev", width="100%")
-                ),
-                rx.menu_item(
-                    rx.link("Contact", href="mailto:founders@=reflex.dev", width="100%")
+                    rx.link("About", href="https://github.com/goblinrum/boolotube/tree/main", width="100%")
                 ),
             ),
         ),
@@ -110,15 +107,11 @@ def template(
             return rx.hstack(
                 sidebar(),
                 rx.box(
-                    rx.box(
-                        page_content(),
-                        **styles.template_content_style,
-                    ),
-                    **styles.template_page_style,
+                    page_content(),
+                    **styles.template_content_style,
                 ),
                 rx.spacer(),
                 menu_button(),
-                align_items="flex-start",
                 transition="left 0.5s, width 0.5s",
                 position="relative",
             )

@@ -21,6 +21,10 @@ class FormState(State):
                     self.reaction_url = self.project['my_reaction_url']
                     self.original_url = self.project['original_video_url']
                     self.secret = self.project['secret_id']
+                    async with httpx.AsyncClient() as client:  
+                        response = await client.get(f"http://localhost:8000/timestamps/{self.response_p}")
+                        if response.status_code == 200:
+                            self.timestamp_items_list = response.json()["result"]
                 yield
             else:
                 async with self:
@@ -111,6 +115,8 @@ def creator() -> rx.Component:
         rx.cond(FormState.response_p,
                 rx.text("Your secret_id is: ", FormState.secret, ". Write this down.")),
         rx.cond(FormState.response_p,
+                rx.text("Your product_id is: ", FormState.response_p, ". Write this down.")),
+        rx.cond(FormState.response_p,
                timestamp_form()),
         rx.cond(FormState.err,
                 rx.text(FormState.err)),
@@ -149,7 +155,7 @@ def timestamp_form() -> rx.Component:
             ),
             on_submit=FormState.handle_submit_t,  
         ),
-
+rx.box(
         rx.foreach(FormState.timestamp_items_list, lambda timestamp: rx.vstack(rx.hstack(rx.text(f'Start Time My Reaction: {timestamp["start_time_my_reaction"]}'),rx.text(f'End Time My Reaction: {timestamp["end_time_my_reaction"]}')),rx.hstack(rx.text(f'Start Time Original: {timestamp["start_time_original"]}'),rx.text(f'End Time Original: {timestamp["end_time_original"]}')), rx.button(f"Delete", on_click=partial(FormState.delete_timestamp, timestamp['uuid']))))
-
+)
     )
