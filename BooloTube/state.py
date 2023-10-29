@@ -19,6 +19,10 @@ class State(rx.State):
     # def project_id(self) -> str:
     #     return self.get_query_params().get('project_id', 'no pid')
 
+    @rx.var
+    def secret_id(self) -> str:
+        return self.get_query_params().get('pid', 'no pid')
+
 async def answer(self):
     # Our chatbot is not very smart right now...
     answer = "I don't know!"
