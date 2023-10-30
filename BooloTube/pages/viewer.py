@@ -130,17 +130,51 @@ def video_container() -> rx.Component:
                 }}
 
                 function fetchTimestamps() {{
-                    fetch(`http://localhost:8000/timestamps/${{project_id}}`)
-                        .then(response => response.json())
-                        .then(data => {{
-                            timestamps = data.result;
-                            localStorage.removeItem('project_id');
-                            localStorage.removeItem('my_reaction_url');
-                            localStorage.removeItem('original_video_url');
-                        }})
-                        .catch(error => {{
-                            console.error('Error fetching timestamps:', error);
-                        }});
+                    let data = {{
+                        "result": [
+                            {{
+                                "uuid": "05bb368a-fb43-41e8-8a8e-35a6024a72e0",
+                                "project_id": "a4b69886-cc27-42f2-88e5-1f246d9fa9ab",
+                                "start_time_my_reaction": 200,
+                                "end_time_my_reaction": 230,
+                                "start_time_original": 110,
+                                "end_time_original": 140
+                            }},
+                            {{
+                                "uuid": "0f3a5a9b-4c01-4b90-9159-22572fba984f",
+                                "project_id": "a4b69886-cc27-42f2-88e5-1f246d9fa9ab",
+                                "start_time_my_reaction": 95,
+                                "end_time_my_reaction": 108,
+                                "start_time_original": 0,
+                                "end_time_original": 13
+                            }},
+                            {{
+                                "uuid": "356599c3-e121-48e0-b8be-89c0fd8d9f85",
+                                "project_id": "a4b69886-cc27-42f2-88e5-1f246d9fa9ab",
+                                "start_time_my_reaction": 154,
+                                "end_time_my_reaction": 194,
+                                "start_time_original": 65,
+                                "end_time_original": 105
+                            }},
+                            {{
+                                "uuid": "d438c6bd-4eea-49b6-951c-2218e1c90c6f",
+                                "project_id": "a4b69886-cc27-42f2-88e5-1f246d9fa9ab",
+                                "start_time_my_reaction": 240,
+                                "end_time_my_reaction": 350,
+                                "start_time_original": 140,
+                                "end_time_original": 250
+                            }},
+                            {{
+                                "uuid": "fc811e06-4577-40ff-a164-fbfb4230ad5b",
+                                "project_id": "a4b69886-cc27-42f2-88e5-1f246d9fa9ab",
+                                "start_time_my_reaction": 110,
+                                "end_time_my_reaction": 153,
+                                "start_time_original": 17,
+                                "end_time_original": 60
+                            }}
+                        ]
+                    }};
+                    timestamps = data.result;
                 }}
 
                 function onPlayerStateChange(event) {{
