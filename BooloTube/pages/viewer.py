@@ -86,9 +86,9 @@ def video_container() -> rx.Component:
 
                 function onYouTubeIframeAPIReady() {{
                     var localStorageCheckInterval = setInterval(function() {{
-                        project_id = localStorage.getItem('project_id');
-                        my_reaction = localStorage.getItem('my_reaction_url');
-                        original_video = localStorage.getItem('original_video_url');
+                        project_id = "a4b69886-cc27-42f2-88e5-1f246d9fa9ab";
+                        my_reaction = "https://www.youtube.com/watch?v=YVlJ2kHYey8";
+                        original_video = "https://www.youtube.com/watch?v=EuWVGBBEtvM";
 
                         if (project_id && my_reaction && original_video) {{
                             my_reaction = my_reaction.split('v=')[1];
